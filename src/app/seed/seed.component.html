@@ -1,0 +1,74 @@
+<h2>Admin Seed</h2>
+<section class="admin-card" aria-labelledby="seed-title">
+  <header class="admin-card-header">
+    <div class="brand">
+      <div class="brand-head">
+        <!-- small Pokéball SVG -->
+        <svg class="pokeball" viewBox="0 0 100 100" width="36" height="36" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="48" fill="#e63946" stroke="#000" stroke-width="4"></circle>
+          <path d="M2 50h96" stroke="#000" stroke-width="8" />
+          <circle cx="50" cy="50" r="18" fill="#fff" stroke="#000" stroke-width="4"></circle>
+          <circle cx="50" cy="50" r="8" fill="#000"></circle>
+        </svg>
+        <h1 id="seed-title">Admin — Seed Pokémon Data</h1>
+      </div>
+      <p class="lead">Manage the Pokémon dataset used by the app. Use these actions carefully.</p>
+    </div>
+  </header>
+
+  <div class="status" role="status" aria-live="polite">
+    <div *ngIf="loading()" class="status-row">
+      <span class="spinner" aria-hidden="true"></span>
+      <span>Checking dataset status…</span>
+    </div>
+
+    <div *ngIf="!loading() && seeded() === true" class="status-row seeded">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#2b9348" d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4z"/></svg>
+      <div class="status-text">
+        <strong>Data seeded</strong>
+        <p class="muted">Pokémon data is already present. To reseed, delete all data then seed again.</p>
+      </div>
+    </div>
+
+    <div *ngIf="!loading() && seeded() === false" class="status-row not-seeded">
+      <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#ffb703" d="M12 2L2 22h20L12 2z"/></svg>
+      <div class="status-text">
+        <strong>Data not seeded</strong>
+        <p class="muted">No Pokémon data found. Click the button below to seed the data.</p>
+      </div>
+    </div>
+
+    <div *ngIf="error()" class="status-row error" role="alert">{{ error() }}</div>
+    <div *ngIf="message()" class="status-row message" role="status">{{ message() }}</div>
+  </div>
+
+  <div class="actions">
+    <button
+      class="btn btn-primary"
+      type="button"
+      (click)="seed()"
+      [disabled]="processing()"
+      [attr.aria-busy]="processing()"
+      aria-label="Seed Pokémon data"
+    >
+      <span *ngIf="!processing()">Seed Pokémon Data</span>
+      <span *ngIf="processing()">Processing…</span>
+    </button>
+
+    <button
+      *ngIf="seeded()"
+      class="btn btn-danger"
+      type="button"
+      (click)="deleteAllAndSeed()"
+      [disabled]="processing()"
+      [attr.aria-busy]="processing()"
+      aria-label="Delete all Pokémon and seed again"
+    >
+      Delete All & Seed Again
+    </button>
+
+    <button class="btn btn-ghost" type="button" (click)="checkSeedStatus()" aria-label="Refresh status">
+      Refresh Status
+    </button>
+  </div>
+</section>

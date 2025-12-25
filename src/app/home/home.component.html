@@ -1,0 +1,94 @@
+<header class="navbar" role="banner">
+  <div class="navbar-inner">
+    <a class="brand" routerLink="/" aria-label="PokeDuel home">
+      <!-- inline Pokéball SVG as brand -->
+      <svg class="brand-icon" viewBox="0 0 100 100" width="36" height="36" aria-hidden="true" focusable="false">
+        <circle cx="50" cy="50" r="48" fill="#e63946" stroke="#000" stroke-width="4"></circle>
+        <path d="M2 50h96" stroke="#000" stroke-width="8" />
+        <circle cx="50" cy="50" r="18" fill="#fff" stroke="#000" stroke-width="4"></circle>
+        <circle cx="50" cy="50" r="8" fill="#000"></circle>
+      </svg>
+      <span class="brand-title">PokeDuel</span>
+    </a>
+
+    <nav class="main-nav" role="navigation" aria-label="Primary">
+      <a routerLink="minigame" class="nav-link">Mini Game</a>
+      <a routerLink="store" class="nav-link">Store</a>
+      <a routerLink="duel" class="nav-link">Duel</a>
+      <a *ngIf="isAdmin()" routerLink="admin" class="nav-link">Seed</a>
+    </nav>
+
+    <div class="actions">
+      <button
+        class="profile-btn"
+        type="button"
+        aria-haspopup="menu"
+        [attr.aria-expanded]="menuOpen()"
+        (click)="toggleMenu()"
+        (keydown.escape)="closeMenu()"
+        title="Open profile menu"
+      >
+        <!-- small Pokéball avatar -->
+        <svg class="avatar" viewBox="0 0 100 100" width="28" height="28" aria-hidden="true" focusable="false">
+          <circle cx="50" cy="50" r="48" fill="#f94144" stroke="#000" stroke-width="3"></circle>
+          <path d="M4 50h92" stroke="#000" stroke-width="6" />
+          <circle cx="50" cy="50" r="14" fill="#fff" stroke="#000" stroke-width="3"></circle>
+          <circle cx="50" cy="50" r="6" fill="#000"></circle>
+        </svg>
+        <span class="visually-hidden">Profile</span>
+      </button>
+
+      <ul
+        *ngIf="menuOpen()"
+        class="profile-menu"
+        role="menu"
+        aria-label="Profile menu"
+        (keydown.escape)="closeMenu()"
+      >
+        <li role="none">
+          <a role="menuitem" routerLink="/profile" class="menu-item">Profile</a>
+        </li>
+        <li role="none" *ngIf="isAdmin()">
+          <a role="menuitem" routerLink="/admin" class="menu-item">Admin / Seed</a>
+        </li>
+        <li role="none">
+          <button type="button" role="menuitem" class="menu-item" (click)="logout()">Logout</button>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<main class="page" role="main">
+  <router-outlet></router-outlet>
+
+  <section *ngIf="showHomeContent()" id="about" class="about-section" role="region" aria-labelledby="about-title">
+    <div class="about-inner">
+      <h2 id="about-title" class="about-title">About PokeDuel</h2>
+      <p class="about-lead">
+        PokeDuel is a Pokémon‑themed competitive dueling experience. Collect, build a team, and face other trainers
+        in quick, tactical matches. Perfect for short sessions and friendly competition.
+      </p>
+
+      <h3 class="about-subtitle">How to play</h3>
+      <ol class="how-to">
+        <li><strong>Assemble a team:</strong> choose Pokémon with complementary moves and types.</li>
+        <li><strong>Start a duel:</strong> enter a match via the Duel screen or challenge a friend.</li>
+        <li><strong>Use strategy:</strong> pick moves each turn, exploit weaknesses, and time your switches.</li>
+        <li><strong>Win:</strong> defeat the opponent by reducing their team's HP or forcing a timeout.</li>
+      </ol>
+
+      <h3 class="about-subtitle">Quick tips</h3>
+      <ul class="tips">
+        <li>Balance attackers and defenders.</li>
+        <li>Pay attention to type advantages and move cooldowns.</li>
+        <li>Use the Mini Game to practice mechanics and earn rewards.</li>
+      </ul>
+
+      <div class="about-actions">
+        <a routerLink="/duel" class="btn btn-primary" aria-label="Start a duel">Start a Duel</a>
+        <a routerLink="/minigame" class="btn btn-ghost" aria-label="Open mini game">Try the Mini Game</a>
+      </div>
+    </div>
+  </section>
+</main>

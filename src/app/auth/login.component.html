@@ -1,0 +1,50 @@
+<main class="page" role="main">
+  <section class="card" aria-labelledby="login-title">
+    <h1 id="login-title" class="title">Sign in to PokeDuel</h1>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate aria-describedby="form-error">
+      <label class="label" for="email">Email</label>
+      <input
+        id="email"
+        type="email"
+        formControlName="email"
+        autocomplete="email"
+        class="input"
+        [attr.aria-invalid]="email().invalid && email().touched"
+        aria-required="true"
+        autofocus
+      />
+      <div *ngIf="email().invalid && email().touched" class="field-error" role="alert">
+        {{ email().hasError('required') ? 'Email is required' : 'Enter a valid email' }}
+      </div>
+
+      <label class="label" for="password">Password</label>
+      <input
+        id="password"
+        type="password"
+        formControlName="password"
+        autocomplete="current-password"
+        class="input"
+        [attr.aria-invalid]="password().invalid && password().touched"
+        aria-required="true"
+      />
+      <div *ngIf="password().invalid && password().touched" class="field-error" role="alert">
+        {{ password().hasError('required') ? 'Password is required' : 'Password must be at least 6 characters' }}
+      </div>
+
+      <button
+        type="submit"
+        class="btn"
+        [disabled]="isSubmitting() || !canSubmit()"
+        [attr.aria-busy]="isSubmitting()"
+      >
+        <span *ngIf="!isSubmitting()">Sign in</span>
+        <span *ngIf="isSubmitting()">Signing in…</span>
+      </button>
+
+      <p id="form-error" class="form-error" role="alert" aria-live="polite" *ngIf="error()">
+        {{ error() }}
+      </p>
+    </form>
+  </section>
+</main>
