@@ -54,3 +54,45 @@
   .actions { flex-direction:column; }
   .btn { width:100%; }
 }
+
+/* Pokémon Meta */
+.meta-section { --meta-columns: 60px 1fr 140px 160px 360px 160px; max-width: 1200px; margin: 1.25rem auto; padding: 1.25rem; background: #fff; border-radius: 12px; box-shadow: 0 8px 28px rgba(2,6,23,0.04); border:1px solid rgba(11,18,32,0.04);} 
+.meta-header { display:flex; flex-direction:column; gap:0.25rem; margin-bottom:0.75rem; }
+.meta-lead { margin:0; color:#475569 }
+
+.meta-filters { display:flex; gap:0.5rem; align-items:center; margin-bottom:0.75rem; flex-wrap:wrap; }
+.filter-input { padding:0.5rem; border-radius:8px; border:1px solid rgba(11,18,32,0.06); min-width:120px; }
+
+.meta-list { max-height:520px; overflow:auto; border-radius:8px; border:1px solid rgba(11,18,32,0.04); }
+.meta-grid, .meta-row { display:grid; grid-template-columns: var(--meta-columns); gap:0; padding:0.5rem 0.75rem; align-items:center; }
+.meta-grid-header { background:#f8fafc; font-weight:700; border-bottom:1px solid rgba(11,18,32,0.04); }
+.meta-row { border-bottom:1px solid rgba(11,18,32,0.03); }
+.meta-row .col { padding:0 0.5rem; display:flex; align-items:center; }
+.id-col { justify-content:flex-start; }
+.name-col { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; justify-content:flex-start; }
+.gen-col { justify-content:center; }
+.rarity-col { justify-content:center; }
+.stats-col { justify-content:flex-start; }
+.actions-col { justify-content:flex-end; }
+
+/* Form control sizing inside grid cells */
+.gen-col input[type="number"] { width:80px; min-width:60px; }
+.rarity-col select { min-width:120px; max-width:160px; }
+.stats-col .stats-input { width:100%; min-height:44px; padding:0.5rem; border-radius:6px; border:1px solid rgba(11,18,32,0.06); }
+
+/* Align action buttons inline and not full-width */
+.actions-col { display:flex; justify-content:flex-end; gap:0.5rem; align-items:center; }
+.actions-col .btn { width:auto; padding:0.5rem 0.9rem; }
+.icon-btn { background:transparent; border:none; cursor:pointer; font-size:1rem; }
+
+.stats-pre { margin:0; font-size:0.85rem; color:#374151; max-height:64px; overflow:auto; }
+.list-loading, .list-empty { padding:0.75rem; color:#475569; }
+
+@media (max-width:920px) {
+  .meta-section { --meta-columns: 48px 1fr 110px 130px 240px 110px; }
+}
+@media (max-width:640px) {
+  .meta-section { --meta-columns: 48px 1fr 80px 80px; }
+  .stats-col, .actions-col { display:none; }
+  .meta-row { padding:0.6rem; }
+}

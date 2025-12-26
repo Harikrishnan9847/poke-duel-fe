@@ -72,3 +72,84 @@
     </button>
   </div>
 </section>
+
+<!-- Pokémon Meta Management -->
+<section class="meta-section" aria-labelledby="meta-title">
+  <header class="meta-header">
+    <h2 id="meta-title">Pokémon Meta</h2>
+    <p class="meta-lead">Browse and edit Pokémon metadata. Use filters to narrow results.</p>
+  </header>
+
+  <div class="meta-filters">
+    <input type="text" placeholder="Search name or ID" class="filter-input" [value]="filterSearch()" (input)="filterSearch.set($any($event.target).value)" aria-label="Search" />
+
+    <input type="number" placeholder="Generation" class="filter-input" [value]="filterGeneration()" (input)="filterGeneration.set($any($event.target).value ? +$any($event.target).value : null)" aria-label="Generation" />
+
+    <select class="filter-input" [value]="filterRarity()" (change)="filterRarity.set($any($event.target).value ? +$any($event.target).value : null)" aria-label="Rarity">
+      <option value="">All</option>
+      <option *ngFor="let r of rarityOptions" [value]="r.value">{{ r.label }}</option>
+    </select>
+
+    <select class="filter-input" [value]="pageSize()" (change)="pageSize.set(+($any($event.target).value))" aria-label="Page size">
+      <option value="10">10</option>
+      <option value="20">20</option>
+      <option value="50">50</option>
+    </select>
+
+    <button class="btn btn-ghost" type="button" (click)="reloadList()">Search</button>
+    <button class="btn btn-ghost" type="button" (click)="resetFilters()">Reset</button>
+  </div>
+
+  <div class="meta-list" tabindex="0" (scroll)="onScroll($any($event.target))" role="list">
+    <div class="meta-grid meta-grid-header" role="row">
+      <div class="col id-col">ID</div>
+      <div class="col name-col">Name</div>
+      <div class="col gen-col">Generation</div>
+      <div class="col rarity-col">Rarity</div>
+      <div class="col stats-col">Base Stats</div>
+      <div class="col actions-col">Actions</div>
+    </div>
+
+    <div *ngFor="let p of pokemonList(); trackBy: trackById" class="meta-row" role="listitem">
+      <div class="col id-col">{{ p.id }}</div>
+      <div class="col name-col">{{ p.name }}</div>
+
+      <div class="col gen-col">
+        <div *ngIf="editingId() !== p.id">{{ p.generationId }}</div>
+        <div *ngIf="editingId() === p.id">
+          <input type="number" [(ngModel)]="$any(p)._tmpGenerationId" name="tmpGeneration-{{p.id}}" />
+        </div>
+      </div>
+
+      <div class="col rarity-col">
+        <div *ngIf="editingId() !== p.id">{{ rarityLabel(p.rarity) }}</div>
+        <div *ngIf="editingId() === p.id">
+          <select [(ngModel)]="$any(p)._tmpRarity" name="tmpRarity-{{p.id}}">
+            <option [ngValue]="null">-- select rarity --</option>
+            <option *ngFor="let r of rarityOptions" [ngValue]="r.value">{{ r.label }}</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="col stats-col">
+        <div *ngIf="editingId() !== p.id">
+          <pre class="stats-pre">{{ p.baseStatTotal | json }}</pre>
+        </div>
+        <div *ngIf="editingId() === p.id">
+          <input class="stats-input" type="number" [(ngModel)]="$any(p)._tmpBaseStats" name="tmpBaseStats-{{p.id}}" aria-label="Base stats total" />
+        </div>
+      </div>
+
+      <div class="col actions-col">
+        <button *ngIf="editingId() !== p.id" class="icon-btn" title="Edit" (click)="startEdit(p)">✏️</button>
+        <div *ngIf="editingId() === p.id">
+          <button class="btn btn-primary" (click)="saveEdit(p)" [disabled]="savingId() === p.id">Save</button>
+          <button class="btn" (click)="cancelEdit()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="loadingList()" class="list-loading">Loading…</div>
+    <div *ngIf="!loadingList() && !pokemonList().length" class="list-empty">No results</div>
+  </div>
+</section>
